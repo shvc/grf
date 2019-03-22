@@ -1,14 +1,15 @@
 # grf
 gen random files
 
-### Build
+### Build from source or download prebuild binary
 ```
 git clone https://github.com/cchare/grf.git
 cd grf
-go build
+go build -o grf
 ```
 
 ### Usage
+##### help page
 ```
 ./grf -h
 Usage of ./grf:
@@ -16,13 +17,15 @@ Usage of ./grf:
     	number of files (default 1)
   -o string
     	output dir (default ".")
+  -p string
+    	filename prefix (default "laod")
   -s string
     	size(K,M,G,T) of file (default "1M")
   -v	show version
 
 ```
 
-### Gen 5 2.2M random files to outdir/
+##### Generate 5 random files with size 2.22M to outdir/
 ```
 mkdir outdir
 ./grf -n 5 -s 2.2M -o outdir

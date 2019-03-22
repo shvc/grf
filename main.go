@@ -73,6 +73,7 @@ func main() {
 	num := flag.Int("n", 1, "number of files")
 	size := flag.String("s", "1M", "size(K,M,G,T) of file")
 	out := flag.String("o", ".", "output dir")
+	prefix := flag.String("p", "laod", "filename prefix")
 	ver := flag.Bool("v", false, "show version")
 	flag.Parse()
 
@@ -89,7 +90,7 @@ func main() {
 	fmt.Printf("gen %d file with size[%s] to %s\n", *num, *size, *out)
 	ifd := mrand.New(mrand.NewSource(time.Now().UnixNano()))
 	for i := 0; i < *num; i++ {
-		filename := filepath.Join(*out, fmt.Sprintf("file-%s-%d", *size, i))
+		filename := filepath.Join(*out, fmt.Sprintf("%s-%s-%d", *prefix, *size, i))
 		fd, err := os.Create(filename)
 		if err != nil {
 			fmt.Printf("Create file %s failed %s\n", filename, err)
