@@ -73,7 +73,7 @@ func main() {
 	num := flag.Int("n", 1, "number of files")
 	size := flag.String("s", "1M", "size(K,M,G,T) of file")
 	out := flag.String("o", ".", "output dir")
-	prefix := flag.String("p", "laod", "filename prefix")
+	prefix := flag.String("p", "vager", "filename prefix")
 	ver := flag.Bool("v", false, "show version")
 	flag.Parse()
 
