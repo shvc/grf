@@ -41,13 +41,13 @@ func toBytes(s string) (int64, error) {
 	}
 
 	switch multiple {
-	case "T", "TB", "TIB":
+	case "T", "TB":
 		return int64(bytes * TERABYTE), nil
-	case "G", "GB", "GIB":
+	case "G", "GB":
 		return int64(bytes * GIGABYTE), nil
-	case "M", "MB", "MIB":
+	case "M", "MB":
 		return int64(bytes * MEGABYTE), nil
-	case "K", "KB", "KIB":
+	case "K", "KB":
 		return int64(bytes * KILOBYTE), nil
 	case "B":
 		return int64(bytes), nil
