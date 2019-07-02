@@ -16,11 +16,11 @@ import (
 )
 
 const (
-	BYTE = 1 << (10 * iota)
-	KILOBYTE
-	MEGABYTE
-	GIGABYTE
-	TERABYTE
+	myByte = 1 << (10 * iota)
+	myKilobyte
+	myMegabyte
+	myGigabyte
+	myTerabyte
 )
 
 var version = "unknow"
@@ -42,13 +42,13 @@ func toBytes(s string) (int64, error) {
 
 	switch multiple {
 	case "T", "TB":
-		return int64(bytes * TERABYTE), nil
+		return int64(bytes * myTerabyte), nil
 	case "G", "GB":
-		return int64(bytes * GIGABYTE), nil
+		return int64(bytes * myGigabyte), nil
 	case "M", "MB":
-		return int64(bytes * MEGABYTE), nil
+		return int64(bytes * myMegabyte), nil
 	case "K", "KB":
-		return int64(bytes * KILOBYTE), nil
+		return int64(bytes * myKilobyte), nil
 	case "B":
 		return int64(bytes), nil
 	default:
