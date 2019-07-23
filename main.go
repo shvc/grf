@@ -1,16 +1,18 @@
 package main
 
 import (
-	"crypto/rand"
 	"errors"
 	"flag"
 	"fmt"
 	"io"
-	mrand "math/rand"
+	"math/rand"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
+	"sync"
+	"sync/atomic"
 	"time"
 	"unicode"
 )
@@ -56,24 +58,12 @@ func toBytes(s string) (int64, error) {
 	}
 }
 
-// gen random bytes
-func randomBytes(len uint) []byte {
-	buf := make([]byte, len)
-	_, err := rand.Read(buf)
-	if err != nil {
-		mrand.Seed(time.Now().UnixNano())
-		for i := len - len; i < len; i++ {
-			buf[i] = byte(mrand.Intn(128))
-		}
-	}
-	return buf
-}
-
 func main() {
-	num := flag.Int("n", 1, "number of files")
+	num := flag.Uint64("n", 1, "number of files")
 	size := flag.String("s", "1M", "size(K,M,G,T) of file")
 	out := flag.String("o", ".", "output dir")
 	prefix := flag.String("p", "vager", "filename prefix")
+	threads := flag.Int("t", runtime.NumCPU(), "threads")
 	ver := flag.Bool("v", false, "show version")
 	flag.Parse()
 
@@ -87,20 +77,34 @@ func main() {
 		fmt.Printf("invalid file size: %s, erro:%s", *size, err)
 		return
 	}
+	filePrefix := filepath.Join(*out, fmt.Sprintf("%s-%s", *prefix, *size))
 	fmt.Printf("gen %d file with size[%s] to %s\n", *num, *size, *out)
-	ifd := mrand.New(mrand.NewSource(time.Now().UnixNano()))
-	for i := 0; i < *num; i++ {
-		filename := filepath.Join(*out, fmt.Sprintf("%s-%s-%d", *prefix, *size, i))
-		fd, err := os.Create(filename)
-		if err != nil {
-			fmt.Printf("Create file %s failed %s\n", filename, err)
-			break
-		}
-		if _, err = io.CopyN(fd, ifd, fileSize); err != nil {
-			fmt.Printf("Gen file %s failed %s\n", filename, err)
-			fd.Close()
-			break
-		}
-		fd.Close()
+	var index uint64
+	wg := sync.WaitGroup{}
+	for i := 0; i < *threads; i++ {
+		wg.Add(1)
+		go func(fileprefix string, n uint64) {
+			ifd := rand.New(rand.NewSource(time.Now().UnixNano()))
+			for {
+				fn := atomic.AddUint64(&index, 1)
+				if fn > n {
+					break
+				}
+				filename := fmt.Sprintf("%s-%d", fileprefix, fn)
+				ofd, err := os.Create(filename)
+				if err != nil {
+					fmt.Printf("create file %s failed %s\n", filename, err)
+					break
+				}
+				if _, err = io.CopyN(ofd, ifd, fileSize); err != nil {
+					fmt.Printf("gen random file %s failed %s\n", filename, err)
+					ofd.Close()
+					break
+				}
+				ofd.Close()
+			}
+			wg.Done()
+		}(filePrefix, *num)
 	}
+	wg.Wait()
 }
