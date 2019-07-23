@@ -1,11 +1,11 @@
 # grf
-gen random files
+multi-threads gen random files
 
 ### Build from source or download prebuild binary
 ```
 git clone https://github.com/cchare/grf.git
 cd grf
-go build -o grf
+go build
 ```
 
 ### Usage
@@ -26,10 +26,9 @@ Usage of ./grf:
   -v	show version
 ```
 
-##### Generate 16 random files with size 2.2M to outdir/
+##### Generate 16 random files with size 2.2M to current dir
 ```
-mkdir outdir
-./grf -n 16 -s 2.2M -o outdir
+./grf -n 16 -s 2.2M
 ```
 
 ##### Use 16 theads generate 16 random files to outdir/
