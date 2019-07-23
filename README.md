@@ -1,11 +1,14 @@
 # grf
-gen random files
+multi-threads gen random files
 
-### Build from source or download prebuild binary
+### Download
+download prebuild binary  
+https://github.com/vager/grf/releases  
+or build from source
 ```
 git clone https://github.com/cchare/grf.git
 cd grf
-go build -o grf
+go build
 ```
 
 ### Usage
@@ -13,20 +16,26 @@ go build -o grf
 ```
 ./grf -h
 Usage of ./grf:
-  -n int
+  -n uint
     	number of files (default 1)
   -o string
     	output dir (default ".")
   -p string
-    	filename prefix (default "laod")
+    	filename prefix (default "vager")
   -s string
     	size(K,M,G,T) of file (default "1M")
+  -t int
+    	threads (default 8)
   -v	show version
-
 ```
 
-##### Generate 5 random files with size 2.22M to outdir/
+##### Generate 16 random files with size 2.2M to current dir
+```
+./grf -n 16 -s 2.2M
+```
+
+##### Use 16 theads generate 16 random files to outdir/
 ```
 mkdir outdir
-./grf -n 5 -s 2.2M -o outdir
+./grf -t 16 -n 16 -o outdir
 ```
