@@ -77,7 +77,7 @@ func main() {
 		fmt.Printf("invalid file size: %s, erro:%s", *size, err)
 		return
 	}
-	filePrefix := filepath.Join(*out, fmt.Sprintf("%s-%d", *prefix, *size))
+	filePrefix := filepath.Join(*out, fmt.Sprintf("%s-%s", *prefix, *size))
 	fmt.Printf("gen %d file with size[%s] to %s\n", *num, *size, *out)
 	var index uint64
 	wg := sync.WaitGroup{}
