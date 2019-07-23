@@ -1,7 +1,10 @@
 # grf
 multi-threads gen random files
 
-### Build from source or download prebuild binary
+### Download
+download prebuild binary  
+https://github.com/vager/grf/releases  
+or build from source
 ```
 git clone https://github.com/cchare/grf.git
 cd grf
