@@ -20,7 +20,10 @@ pkg:
 	zip -m ${BINARY}-${VERSION}-win.zip ${BINARY}.exe
 
 test:
-	go test
+	go test ./...
+
+vet:
+	go vet ./...
 
 default:
 	@echo "Building ${BINARY}-${VERSION}"
@@ -33,4 +36,4 @@ clean:
 	rm -rf *zip
 	rm -rf ${BINARY}
 
-.PHONY: pkg test default clean
+.PHONY: pkg test vet default clean
